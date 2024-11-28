@@ -1,0 +1,24 @@
+import matplotlib.pyplot as plt
+
+# Data categories and counts
+categories = [
+    "Byte-compiled files",
+    "Build/packaging files",
+    "Unit test/coverage reports",
+    "Environment files",
+    "Tool-specific directories",
+    "Documentation files",
+    "IDE/project-specific files"
+]
+
+counts = [5, 15, 10, 8, 6, 1, 4]
+
+# Create the bar chart
+plt.figure(figsize=(10, 6))
+plt.bar(categories, counts)
+plt.xlabel('Categories')
+plt.ylabel('Count of Patterns')
+plt.title('Distribution of Patterns in .gitignore')
+plt.xticks(rotation=45, ha="right")
+plt.tight_layout()
+plt.show()
