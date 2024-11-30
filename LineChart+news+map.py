@@ -8,7 +8,12 @@ from dateutil.relativedelta import relativedelta
 
 # Protect API Key
 apikey = config("ALPHA_API_KEY") #Using Alpha Advantage API for stock data retrieval
+news_api_key = config("NEWS_API_KEY")
+
 symbol = st.text_input("Enter Stock Symbol:")  # Mock code to test line graph. To be replaced.
+
+data = None
+
 
 def data_frame(url, time_series_key, button):  
     if not symbol:
@@ -153,3 +158,63 @@ elif b7_button:
     end_date = datetime.now()
     start_date = data["Timestamp"].min() #Last data from dataframe
     plot_data(data, symbol, start_date=start_date.strftime("from %B %d, %Y"), end_date=end_date.strftime("%B %d, %Y")) #Calling method to plot line graph with specified parameters
+
+    
+     # Display Plot and Interactive Table
+if data is not None:
+    start_date = data["Timestamp"].iloc[0].strftime("%B %d, %Y")
+    end_date = data["Timestamp"].iloc[-1].strftime("%B %d, %Y")
+    
+    
+    # Stock Data Table
+    st.markdown("### Stock Data Table")
+    st.dataframe(data)  # Display interactive table
+    
+    
+    
+    # News Section
+st.markdown("---")  # Separator
+st.header("Finance News")
+news_url = f"https://newsapi.org/v2/top-headlines?country=us&category=business&q=finance&apiKey={news_api_key}"
+response = requests.get(news_url)
+if response.status_code == 200:
+    articles = response.json().get("articles", [])
+    if articles:
+        for article in articles[:5]:  # Display only the first 5 articles
+            title = article.get("title", "No Title")
+            description = article.get("description", "No Description")
+            image_url = article.get("urlToImage")
+            article_url = article.get("url", "#")
+            
+            st.subheader(title)
+            if image_url:  # Display image if it exists
+                st.image(image_url, width=700)
+            st.write(description)
+            st.markdown(f"[Read More]({article_url})")
+            st.markdown("---")
+    else:
+        st.info("No articles found.")
+else:
+    st.warning("Failed to fetch news.")
+# Map Section
+st.markdown("---")  # Separator
+st.header("Market Insights from Your Region")
+
+# Fetch location data
+try:
+    location_response = requests.get("https://ipinfo.io")
+    if location_response.status_code == 200:
+        location_data = location_response.json()
+        loc = location_data.get("loc", "0,0").split(",")
+        try:
+            latitude, longitude = float(loc[0]), float(loc[1])
+            st.write(f"Detected location: Latitude {latitude}, Longitude {longitude}")
+            # Create DataFrame for map
+            location_df = pd.DataFrame([{"latitude": latitude, "longitude": longitude}])
+            st.map(location_df)  # Render the map
+        except ValueError as e:
+            st.error(f"Failed to parse location data. Error: {e}")
+    else:
+        st.warning("Failed to fetch location. Check your internet connection.")
+except requests.exceptions.RequestException as e:
+    st.error(f"Error fetching location data: {e}")
