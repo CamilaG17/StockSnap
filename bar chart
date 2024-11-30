@@ -1,24 +1,28 @@
-import matplotlib.pyplot as plt
+    # Create a bar chart for sector performance
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.bar(sectors, performance, color=['green' if val > 0 else 'red' for val in performance])
+    ax.set_xlabel("Sectors")
+    ax.set_ylabel("Performance (%)")
+    ax.set_title("Stock Market Sector Performance")
+    ax.axhline(0, color='black', linewidth=0.8, linestyle='--')  # Add a baseline
+    ax.set_xticklabels(sectors, rotation=45, ha="right")
+    
+    # Render the chart in Streamlit
+    st.pyplot(fig)
 
-# Data categories and counts
-categories = [
-    "Byte-compiled files",
-    "Build/packaging files",
-    "Unit test/coverage reports",
-    "Environment files",
-    "Tool-specific directories",
-    "Documentation files",
-    "IDE/project-specific files"
-]
+elif tab == "Market Data":
+    st.subheader("Market Data is displayed here")
+    
+    # Example: Display top-performing stocks
+    st.write("Top-performing stocks:")
+    stock_data = {
+        "Ticker": ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"],
+        "Price Change (%)": [2.5, 3.2, 1.8, 2.1, 4.0]
+    }
+    stock_df = pd.DataFrame(stock_data)
+    st.table(stock_df)
 
-counts = [5, 15, 10, 8, 6, 1, 4]
-
-# Create the bar chart
-plt.figure(figsize=(10, 6))
-plt.bar(categories, counts)
-plt.xlabel('Categories')
-plt.ylabel('Count of Patterns')
-plt.title('Distribution of Patterns in .gitignore')
-plt.xticks(rotation=45, ha="right")
-plt.tight_layout()
-plt.show()
+elif tab == "News":
+    st.subheader("News page is displayed here")
+else:
+    st.subheader("Market Analysis is displayed here")
