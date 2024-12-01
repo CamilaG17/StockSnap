@@ -52,7 +52,7 @@ def data_frame(url, time_series_key, button):
         if button == 1:
             return df
         elif button == 2:
-            start_date = end_date - relativedelta(months=1)
+            start_date = end_date - relativedelta(days=30)
             return df[df["Timestamp"] >= start_date]
         elif button == 3:
             start_date = end_date - relativedelta(months=6)
@@ -153,11 +153,11 @@ elif menu == "Market Data":
             st.dataframe(data)
     elif b2_button:
         url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={apikey}'
-        time_series_key = "TIME SERIES (DAILY)"
+        time_series_key = "Time Series (Daily)"
         data = data_frame(url, time_series_key, 2)
         if data is not None:
             end_date = datetime.now()
-            start_date = end_date - timedelta(days=30)
+            start_date = end_date - relativedelta(days=30)
             plot_data(data, symbol, start_date.strftime("from %B %d, %Y"), end_date.strftime("%B %d, %Y"))
             st.markdown("### Data Table")
             st.dataframe(data)
