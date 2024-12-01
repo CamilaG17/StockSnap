@@ -111,21 +111,9 @@ if menu == "Home":
         - **News**: Stay informed with the latest financial updates and curated news.
         - **Market Insights**: Analyze sector performance and visualize opportunities.
 
-        Navigate to these features using the sidebar or the buttons below!
+       
         """
     )
-
-    # Navigation buttons
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        if st.button("Explore Market Data"):
-            menu = "Market Data"  # Update the menu variable
-    with col2:
-        if st.button("View News"):
-            menu = "News"  # Update the menu variable
-    with col3:
-        if st.button("Analyze Market Insights"):
-            menu = "Market Insights"  # Update the menu variable
 
     # Footer with a motivational note
     st.markdown(
