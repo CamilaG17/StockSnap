@@ -168,7 +168,7 @@ if menu == "Home":
 # Market Data Section
 elif menu == "Market Data":
     st.header("Market Data")
-    st.markdown("Enter a stock symbol using the sidebar and select a button below to view stock data") 
+    st.markdown("Enter a stock symbol using the sidebar and select a button below to view stock data.") 
     st.markdown("Choose from various timeframes such as 1 day, 1 month, 6 months, year-to-date, 5 years, 10 years, or the entire history!")
     with st.container():
         b1, b2, b3, b4, b5, b6, b7 = st.columns([1, 1.2, 1.2, 0.9, 1.1, 1.1, 1])
