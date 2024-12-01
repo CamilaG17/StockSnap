@@ -1,4 +1,6 @@
 import streamlit as st
+from news import news_section
+from market_insights import market_insights_section
 
 def home_section():
     st.title("📈 Welcome to the Stock Dashboard")
@@ -11,18 +13,14 @@ def home_section():
         - **News**: Stay informed with the latest financial updates and curated news.
         - **Market Insights**: Analyze sector performance and visualize opportunities.
 
-        Navigate to these features using the sidebar or the buttons below!
+       
         """
     )
 
     # Navigation buttons
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.button("Explore Market Data")
-    with col2:
-        st.button("View News")
-    with col3:
-        st.button("Analyze Market Insights")
+    
+
+
 
     # Footer with a motivational note
     st.markdown(
