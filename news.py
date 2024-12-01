@@ -1,6 +1,5 @@
 import streamlit as st
 import requests
-import pandas as pd
 
 def news_section():
     st.header("Finance News")
