@@ -15,7 +15,7 @@ styles = {
 # Set page configuration
 page= st.set_page_config(
     page_title="StockSnap",
-    page_icon="📈",
+    page_icon=":chart:",
     layout="wide"
 )
 if page == "StockSnap":
