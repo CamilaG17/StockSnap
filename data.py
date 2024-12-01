@@ -27,7 +27,7 @@ with open("logo.png", "rb") as f:
         """,
         unsafe_allow_html=True,
     )
-symbol = st.sidebar.text_input("Enter Stock Symbol:")
+symbol = st.sidebar.text_input("Enter Stock Symbol (e.g. AAPL, IBM, TSLA):")
 
 data = None
 
