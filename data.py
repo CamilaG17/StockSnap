@@ -6,6 +6,7 @@ import streamlit as st
 from decouple import config
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+import base64
 
 # Protect API Key
 apikey = config("ALPHA_API_KEY")  # Using Alpha Advantage API for stock data retrieval
@@ -16,7 +17,16 @@ menu = st.sidebar.radio(
     "Navigate",
     ("Home", "Market Data", "News", "Market Insights"),
 )
-
+with open("logo.png", "rb") as f:
+    data = base64.b64encode(f.read()).decode("utf-8")
+    st.sidebar.markdown(
+        f"""
+        <div style="display:table;margin-top:-70%;margin-left:10%;text-align:center;">
+            <img src="data:image/jpg;base64,{data}" width="200" height="50">
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 symbol = st.sidebar.text_input("Enter Stock Symbol:")
 
 data = None
