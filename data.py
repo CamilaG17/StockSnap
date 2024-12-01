@@ -8,6 +8,21 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import base64
 
+st.set_page_config(
+    page_title="StockSnap",
+    page_icon=":chart:",
+    menu_items={
+        'Get help': 'https://docs.streamlit.io/',
+        'Report a bug': None,
+        'About': '''Our app was developed by a team of five dedicated students 
+        from **Florida International University**, driven by a shared 
+        passion for simplifying stock market insights. We aim to 
+        empower investors and traders of all levels with real-time 
+        data, intuitive tools, and actionable insights to make 
+        smarter financial decisions.'''
+    }
+)
+
 # Protect API Key
 apikey = config("ALPHA_API_KEY")  # Using Alpha Advantage API for stock data retrieval
 news_api_key = config("NEWS_API_KEY")
