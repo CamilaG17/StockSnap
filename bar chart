@@ -1,10 +1,45 @@
-    # Create a bar chart for sector performance
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import requests
+
+# API configuration
+API_KEY = "your_api_key"
+BASE_URL = "https://finnhub.io/api/v1"
+
+# Helper functions to fetch data
+def fetch_sector_performance():
+    response = requests.get(f"{BASE_URL}/stock/sector-performance", params={"token": API_KEY})
+    data = response.json()
+    sectors = [item['sector'] for item in data]
+    performance = [item['performance'] for item in data]
+    return sectors, performance
+
+def fetch_market_data():
+    response = requests.get(f"{BASE_URL}/stock/symbol", params={"exchange": "US", "token": API_KEY})
+    data = response.json()
+    return pd.DataFrame(data[:5])  # Return the top 5 stocks
+
+def fetch_news():
+    response = requests.get(f"{BASE_URL}/news", params={"category": "general", "token": API_KEY})
+    return response.json()
+
+# Streamlit tabs
+tab = st.sidebar.selectbox("Select Tab", ["Sector Performance", "Market Data", "News", "Market Analysis"])
+
+if tab == "Sector Performance":
+    st.subheader("Stock Market Sector Performance")
+    
+    # Fetch data from API
+    sectors, performance = fetch_sector_performance()
+    
+    # Create a bar chart
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.bar(sectors, performance, color=['green' if val > 0 else 'red' for val in performance])
     ax.set_xlabel("Sectors")
     ax.set_ylabel("Performance (%)")
     ax.set_title("Stock Market Sector Performance")
-    ax.axhline(0, color='black', linewidth=0.8, linestyle='--')  # Add a baseline
+    ax.axhline(0, color='black', linewidth=0.8, linestyle='--')  # Baseline
     ax.set_xticklabels(sectors, rotation=45, ha="right")
     
     # Render the chart in Streamlit
@@ -13,16 +48,22 @@
 elif tab == "Market Data":
     st.subheader("Market Data is displayed here")
     
-    # Example: Display top-performing stocks
+    # Fetch market data
+    stock_df = fetch_market_data()
+    
+    # Display top-performing stocks
     st.write("Top-performing stocks:")
-    stock_data = {
-        "Ticker": ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"],
-        "Price Change (%)": [2.5, 3.2, 1.8, 2.1, 4.0]
-    }
-    stock_df = pd.DataFrame(stock_data)
     st.table(stock_df)
 
 elif tab == "News":
-    st.subheader("News page is displayed here")
+    st.subheader("Latest News")
+    
+    # Fetch and display news
+    news_data = fetch_news()
+    for article in news_data[:5]:  # Display top 5 articles
+        st.write(f"**{article['headline']}**")
+        st.write(article['summary'])
+        st.write(f"[Read more]({article['url']})")
+
 else:
     st.subheader("Market Analysis is displayed here")
