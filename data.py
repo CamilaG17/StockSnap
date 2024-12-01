@@ -7,6 +7,7 @@ from decouple import config
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import base64
+import re
 
 st.set_page_config(
     page_title="StockSnap",
@@ -141,32 +142,41 @@ if menu == "Home":
        
         """
     )
-    st.markdown("---")
-    st.subheader("Did you find this useful?")
-    useful_checkbox = st.checkbox("Yes, I found this useful!")
-    feedback = st.text_area("Send us your feedback (optional):", placeholder="Let us know how we can improve...")
+    # Function to validate email address
+def is_valid_email(email):
+    email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    return re.match(email_regex, email) is not None
 
-    if st.button("Submit Feedback"):
-        if useful_checkbox:
-                st.success("Thank you for your feedback!")
-        else:
-                st.success("Thank you for your feedback!")
-    
-    st.markdown("---")
-    # Add a selectbox for subscription
-    option = st.selectbox(
-        "Would you like to subscribe to our emails?",
-        ("Yes", "No"),
-    )
+# Feedback Section
+st.markdown("---")
+st.subheader("Did you find this useful?")
+useful_checkbox = st.checkbox("Yes, I found this useful!")
+feedback = st.text_area("Send us your feedback (optional):", placeholder="Let us know how we can improve...")
 
-    # Handle the subscription logic
-    if option == "Yes":
-        # Display a text input for the email
-        email = st.text_input("Enter your email:")
-        if email:
+# Submit feedback only if the checkbox is checked
+if st.button("Submit Feedback"):
+    if useful_checkbox:
+        st.success("Thank you for your feedback!")
+    else:
+        st.warning("Please check the box to confirm that you found this useful before submitting feedback.")
+
+# Subscription Section
+st.markdown("---")
+# Add a selectbox for subscription
+option = st.selectbox("Would you like to subscribe to our emails?", ("Yes", "No"))
+
+# Handle the subscription logic
+if option == "Yes":
+    # Display a text input for the email
+    email = st.text_input("Enter your email:")
+
+    if email:
+        if is_valid_email(email):  # Check if the email is valid
             st.success("Thank you for subscribing!")
-    elif option == "No":
-        st.info("See you next time!")
+        else:
+            st.error("Please enter a valid email address.")
+elif option == "No":
+    st.info("See you next time!")
 
     # Footer with a motivational note
     st.markdown(
