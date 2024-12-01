@@ -151,7 +151,22 @@ if menu == "Home":
                 st.success("Thank you for your feedback!")
         else:
                 st.success("Thank you for your feedback!")
+    
+    st.markdown("---")
+    # Add a selectbox for subscription
+    option = st.selectbox(
+        "Would you like to subscribe to our emails?",
+        ("Yes", "No"),
+    )
 
+    # Handle the subscription logic
+    if option == "Yes":
+        # Display a text input for the email
+        email = st.text_input("Enter your email:")
+        if email:
+            st.success("Thank you for subscribing!")
+    elif option == "No":
+        st.info("See you next time!")
 
     # Footer with a motivational note
     st.markdown(
@@ -160,9 +175,6 @@ if menu == "Home":
         "Stay ahead in the market with smarter insights. Your journey begins here."
         """
     )
-
-
-
 
 
 # Market Data Section
