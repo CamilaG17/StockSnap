@@ -103,7 +103,6 @@ st.markdown("""
     <style>
       section[data-testid="stSidebar"] {
         z-index: 20;
-        background-color: #FFFFFF;
       }
     </style>""", unsafe_allow_html=True)
 
