@@ -251,7 +251,6 @@ elif menu == "News":
 
 elif menu == "Market Insights":
     st.header("Market Insights")
-    st.subheader("Largest Daily Gainers")
 
     # Define stock symbols to analyze (update with your preferences)
     stock_symbols = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
