@@ -116,6 +116,16 @@ if menu == "Home":
        
         """
     )
+    st.subheader("Instructions:")
+    st.markdown(
+        """
+        
+        - Navigate to **Market Data** and enter a stock symbol to explore detailed market information.
+        - Navigate to **News** to stay updated with the latest financial headlines and market trends.
+        - Navigate to **Market Insights** to discover the Top Daily Gainers in the stock market.
+       
+        """
+    )
     st.markdown("---")
     st.subheader("Did you find this useful?")
     useful_checkbox = st.checkbox("Yes, I found this useful!")
@@ -143,6 +153,7 @@ if menu == "Home":
 # Market Data Section
 elif menu == "Market Data":
     st.header("Market Data")
+    st.markdown("Enter a stock symbol and select a button below to view stock data for various timeframes, including 1 day, 1 month, 6 months, year-to-date, 5 years, 10 years, or all time!")
     with st.container():
         b1, b2, b3, b4, b5, b6, b7 = st.columns([1, 1.2, 1.2, 0.9, 1.1, 1.1, 1])
         b1_button = b1.button("Latest")
