@@ -286,9 +286,9 @@ elif menu == "News":
         st.error(f"Error fetching location data: {e}")
 
 # Market Insights Section
-
 elif menu == "Market Insights":
     st.header("Market Insights")
+    st.subheader("Largest Daily Gainers")
 
     # Define stock symbols to analyze (update with your preferences)
     stock_symbols = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
@@ -330,22 +330,35 @@ elif menu == "Market Insights":
     performance_df = pd.DataFrame(performance_data)
 
     if not performance_df.empty:
-        # Sort by percentage change
-        performance_df = performance_df.sort_values(by="Change (%)", ascending=False)
-
-        # Display largest daily gainers
-        st.write("### Largest Daily Gainers")
-        st.table(performance_df.head(5))
-
-        # Plot a bar chart of the top 5 gainers
-        fig = px.bar(
-            performance_df.head(5),
-            x="Symbol",
-            y="Change (%)",
-            color="Change (%)",
-            color_continuous_scale="Blues",
-            title="Top 5 Largest Daily Gainers"
+        # Slider to filter by percentage change
+        slider_value = st.slider(
+            "Filter stocks by percentage change:",
+            min_value=-10, max_value=10, value=(0, 5), step=1
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.write(f"Showing stocks with percentage change between {slider_value[0]}% and {slider_value[1]}%")
+
+        # Filter the DataFrame based on slider value
+        filtered_df = performance_df[
+            (performance_df["Change (%)"] >= slider_value[0]) & 
+            (performance_df["Change (%)"] <= slider_value[1])
+        ]
+
+        if not filtered_df.empty:
+            # Display filtered results
+            st.write("### Filtered Stock Data")
+            st.table(filtered_df)
+
+            # Plot bar chart for filtered results
+            fig = px.bar(
+                filtered_df.head(5),
+                x="Symbol",
+                y="Change (%)",
+                color="Change (%)",
+                color_continuous_scale="Blues",
+                title="Top Filtered Daily Gainers"
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.warning("No stocks match the selected percentage change range.")
     else:
         st.warning("No stock performance data available.")
