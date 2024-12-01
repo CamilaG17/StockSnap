@@ -12,11 +12,13 @@ import base64
 apikey = config("ALPHA_API_KEY")  # Using Alpha Advantage API for stock data retrieval
 news_api_key = config("NEWS_API_KEY")
 
+
 # Sidebar navigation
 menu = st.sidebar.radio(
     "Navigate",
     ("Home", "Market Data", "News", "Market Insights"),
 )
+
 with open("logo.png", "rb") as f:
     data = base64.b64encode(f.read()).decode("utf-8")
     st.sidebar.markdown(
@@ -27,7 +29,7 @@ with open("logo.png", "rb") as f:
         """,
         unsafe_allow_html=True,
     )
-symbol = st.sidebar.text_input("Enter Stock Symbol (e.g. AAPL, IBM, TSLA):")
+symbol = st.sidebar.text_input("Enter Stock Symbol (e.g. AAPL, IBM, TSLA):", placeholder= "Click Enter To Submit")
 
 data = None
 
@@ -114,6 +116,17 @@ if menu == "Home":
        
         """
     )
+    st.markdown("---")
+    st.subheader("Did you find this useful?")
+    useful_checkbox = st.checkbox("Yes, I found this useful!")
+    feedback = st.text_area("Send us your feedback (optional):", placeholder="Let us know how we can improve...")
+
+    if st.button("Submit Feedback"):
+        if useful_checkbox:
+                st.success("Thank you for your feedback!")
+        else:
+                st.success("Thank you for your feedback!")
+
 
     # Footer with a motivational note
     st.markdown(
