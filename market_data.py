@@ -69,42 +69,86 @@ def market_data_section():
     # Sidebar inputs
     symbol = st.text_input("Enter Stock Symbol:")
     api_key = "AFX49MY5XQM0TTH7"  # Replace with a valid API key
-    time_series_key = "Time Series (Daily)"
+    time_series_key = "AFX49MY5XQM0TTH7"
     url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
 
     # Buttons for data range selection
-    button = st.radio(
-        "Select Time Range",
-        (
-            "All Data",
-            "Last 1 Month",
-            "Last 6 Months",
-            "Last 1 Year",
-            "Last 5 Years",
-            "Last 10 Years",
-            "Custom Range",
-        ),
-        index=0,
-    )
+    with st.container():
+        b1, b2, b3, b4, b5, b6, b7 = st.columns([1, 1.2, 1.2, 0.9, 1.1, 1.1, 1])
+        b1_button = b1.button("Latest")
+        b2_button = b2.button("1 Month")
+        b3_button = b3.button("6 Months")
+        b4_button = b4.button("YTD")
+        b5_button = b5.button("5 Years")
+        b6_button = b6.button("10 Years")
+        b7_button = b7.button("All Time")
 
-    # Map button text to numeric values
-    button_map = {
-        "All Data": 1,
-        "Last 1 Month": 2,
-        "Last 6 Months": 3,
-        "Last 1 Year": 4,
-        "Last 5 Years": 5,
-        "Last 10 Years": 6,
-        "Custom Range": 7,
-    }
-
-    selected_button = button_map[button]
-
-    # Fetch and filter data
-    df = data_frame(url, time_series_key, selected_button, symbol)
-
-    # Plot data if available
-    if df is not None:
-        start_date = df["Timestamp"].min().strftime("%Y-%m-%d")
-        end_date = df["Timestamp"].max().strftime("%Y-%m-%d") if selected_button != 1 else None
-        plot_data(df, symbol, start_date, end_date)
+    if b1_button:
+        url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&apikey={"AFX49MY5XQM0TTH7"}'
+        time_series_key = "Time Series (5min)"
+        data = data_frame(url, time_series_key, 1)
+        if data is not None:
+            start_date = pd.to_datetime(data["Timestamp"].iloc[0]).strftime("for %A %B %d, %Y")
+            plot_data(data, symbol, start_date)
+            st.markdown("### Data Table")
+            st.dataframe(data)
+    elif b2_button:
+        url = f'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol={symbol}&apikey={"AFX49MY5XQM0TTH7"}'
+        time_series_key = "Monthly Time Series"
+        data = data_frame(url, time_series_key, 2)
+        if data is not None:
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=30)
+            plot_data(data, symbol, start_date.strftime("from %B %d, %Y"), end_date.strftime("%B %d, %Y"))
+            st.markdown("### Data Table")
+            st.dataframe(data)
+    elif b3_button:
+        url = f'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol={symbol}&apikey={"AFX49MY5XQM0TTH7"}'
+        time_series_key = "Monthly Time Series"
+        data = data_frame(url, time_series_key, 3)
+        if data is not None:
+            end_date = datetime.now()
+            start_date = end_date - relativedelta(months=6)
+            plot_data(data, symbol, start_date.strftime("from %B %d, %Y"), end_date.strftime("%B %d, %Y"))
+            st.markdown("### Data Table")
+            st.dataframe(data)
+    elif b4_button:
+        url = f'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol={symbol}&apikey={"AFX49MY5XQM0TTH7"}'
+        time_series_key = "Monthly Time Series"
+        data = data_frame(url, time_series_key, 4)
+        if data is not None:
+            end_date = datetime.now()
+            start_date = end_date - relativedelta(years=1)
+            plot_data(data, symbol, start_date.strftime("from %B %d, %Y"), end_date.strftime("%B %d, %Y"))
+            st.markdown("### Data Table")
+            st.dataframe(data)
+    elif b5_button:
+        url = f'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol={symbol}&apikey={"AFX49MY5XQM0TTH7"}'
+        time_series_key = "Monthly Time Series"
+        data = data_frame(url, time_series_key, 5)
+        if data is not None:
+            end_date = datetime.now()
+            start_date = end_date - relativedelta(years=5)
+            plot_data(data, symbol, start_date.strftime("from %B %d, %Y"), end_date.strftime("%B %d, %Y"))
+            st.markdown("### Data Table")
+            st.dataframe(data)
+    elif b6_button:
+        url = f'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol={symbol}&apikey={"AFX49MY5XQM0TTH7"}'
+        time_series_key = "Monthly Time Series"
+        data = data_frame(url, time_series_key, 6)
+        if data is not None:
+            end_date = datetime.now()
+            start_date = end_date - relativedelta(years=10)
+            plot_data(data, symbol, start_date.strftime("from %B %d, %Y"), end_date.strftime("%B %d, %Y"))
+            st.markdown("### Data Table")
+            st.dataframe(data)
+    elif b7_button:
+        url = f'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol={symbol}&apikey={"AFX49MY5XQM0TTH7"}'
+        time_series_key = "Monthly Time Series"
+        data = data_frame(url, time_series_key, 7)
+        if data is not None:
+            end_date = datetime.now()
+            start_date = data["Timestamp"].min()
+            plot_data(data, symbol, start_date.strftime("from %B %d, %Y"), end_date.strftime("%B %d, %Y"))
+            st.markdown("### Data Table")
+            st.dataframe(data)
