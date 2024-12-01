@@ -6,17 +6,34 @@ from news import news_section
 from market_insights import market_insights_section
 from streamlit_navigation_bar import st_navbar
 
+# Set page configuration
+page= st.set_page_config(
+    page_title="StockSnap",
+    page_icon=":chart:",
+    layout="wide"
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get help': 'https://docs.streamlit.io/',
+        'Report a bug': None,
+        'About': '''Our app was developed by a team of five dedicated students 
+        from **Florida International University**, driven by a shared 
+        passion for simplifying stock market insights. We aim to 
+        empower investors and traders of all levels with real-time 
+        data, intuitive tools, and actionable insights to make 
+        smarter financial decisions.'''
+    }
+)
 # Custom Navigation Bar
 styles = {
     "nav": {
         "background-color": "rgb(124, 215, 130)",
     }
 }
-# Set page configuration
-page= st.set_page_config(
-    page_title="StockSnap",
-    page_icon=":chart:",
-    layout="wide"
+
+page = st_navbar(
+    pages=["StockSnap", ""],
+    styles=styles,
+    options={"use_padding": False}
 )
 if page == "StockSnap":
     new_title = '<p style="font-family:sans-serif; color: #2F4F4F; font-size: 32px;">StockSnap - Stock Market Data and Analysis App</p>'
@@ -35,6 +52,21 @@ try:
         )
 except FileNotFoundError:
     st.sidebar.warning("Logo not found. Ensure 'logo.jpg' is in the app's directory.")
+
+st.markdown("""
+    <style>
+        div[data-testid="stHeader"] {
+            z-index: 1;
+        }
+        div[data-testid="stSidebarCollapsedControl"] {
+            z-index: 9999990;
+            visibility: hidden;
+        }
+        div[data-testid="stSidebarCollapseButton"] {
+            visibility: hidden;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # Initialize session state for menu
 if "menu" not in st.session_state:
