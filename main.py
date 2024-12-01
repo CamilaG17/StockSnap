@@ -7,10 +7,10 @@ from market_insights import market_insights_section
 from streamlit_navigation_bar import st_navbar
 
 # Set page configuration
-page= st.set_page_config(
+st.set_page_config(
     page_title="StockSnap",
     page_icon=":chart:",
-    layout="wide"
+    layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
         'Get help': 'https://docs.streamlit.io/',
@@ -39,19 +39,16 @@ if page == "StockSnap":
     new_title = '<p style="font-family:sans-serif; color: #2F4F4F; font-size: 32px;">StockSnap - Stock Market Data and Analysis App</p>'
     st.markdown(new_title, unsafe_allow_html=True)
 # Logo handling for the sidebar
-try:
-    with open("logo.png", "rb") as f:
-        data = base64.b64encode(f.read()).decode("utf-8")
-        st.sidebar.markdown(
-            f"""
-            <div style="display:table;margin-top:-10%;margin-left:10%;text-align:center;">
-                <img src="data:image/jpg;base64,{data}" width="200" height="50">
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-except FileNotFoundError:
-    st.sidebar.warning("Logo not found. Ensure 'logo.jpg' is in the app's directory.")
+with open("logo.png", "rb") as f:
+    data = base64.b64encode(f.read()).decode("utf-8")
+    st.sidebar.markdown(
+        f"""
+        <div style="display:table;margin-top:-10%;margin-left:10%;text-align:center;">
+            <img src="data:image/jpg;base64,{data}" width="200" height="50">
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 st.markdown("""
     <style>
@@ -102,3 +99,11 @@ st.sidebar.markdown(
     Created with 💡 and ☕ by [Your Name].
     """
 )
+st.markdown("""
+    <style>
+      section[data-testid="stSidebar"] {
+        z-index: 20;
+        background-color: #FFFFFF;
+      }
+    </style>""", unsafe_allow_html=True)
+
