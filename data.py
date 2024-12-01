@@ -38,7 +38,7 @@ with open("logo.png", "rb") as f:
     data = base64.b64encode(f.read()).decode("utf-8")
     st.sidebar.markdown(
         f"""
-        <div style="display:table;margin-top:-60%;margin-left:10%;text-align:center;">
+        <div style="display:table;margin-top:-70%;margin-left:10%;text-align:center;">
             <img src="data:image/jpg;base64,{data}" width="200" height="50">
         </div>
         """,
